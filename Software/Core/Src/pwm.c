@@ -6,6 +6,15 @@
 #include "tim.h"
 #include "gpio.h"
 
+#define NUM_PHASES (3UL)
+
+static const uint8_t PHASE_A_INDEX = 0;
+static const uint8_t PHASE_B_INDEX = 1;
+static const uint8_t PHASE_C_INDEX = 2;
+
+#define MAX_VAL_32_BIT (0xFFFFFFFF)
+#define MAX_VAL_16_BIT (0xFFFF)
+
 typedef struct PhasePinConfig {
 	uint16_t OutputEnableGPIONum;
 	GPIO_TypeDef* OutputEnableGPIOPort;
@@ -13,20 +22,7 @@ typedef struct PhasePinConfig {
 	uint16_t timer_channel;
 } PhasePinConfig_t;
 
-static void timer_init()
-{
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-
-  TIM2->CCR1 = 500000;
-  TIM2->CCR2 = 500000;
-  TIM2->CCR3 = 500000;
-  
-}
-
-
-static PhasePinConfig_t PhasePinConfig[3] = {
+static PhasePinConfig_t PhasePinConfig[NUM_PHASES] = {
     {
         .OutputEnableGPIONum = OD_A_Pin,
         .OutputEnableGPIOPort = OD_A_GPIO_Port,
@@ -48,22 +44,50 @@ static PhasePinConfig_t PhasePinConfig[3] = {
 
 };
 
+static void timer_init();
+static void set_duty_cycle(PhasePinConfig_t* config, uint32_t dutyValue, bool enableOutput);
+
+static void timer_init()
+{
+  for(size_t i = 0; i < NUM_PHASES; i++)
+  {
+      PhasePinConfig_t *config = &PhasePinConfig[i];
+      HAL_TIM_PWM_Start(config->timer, config->timer_channel);
+      __HAL_TIM_SET_COMPARE(config->timer, config->timer_channel, 0);
+      HAL_GPIO_WritePin(config->OutputEnableGPIOPort, config->OutputEnableGPIONum, false);
+  }
+  
+}
+
+
 void pwm_init()
 {
     timer_init();
+    setPhaseADuty(500000, true);
 }
 
-void setPhaseADuty(uint16_t dutyValue, bool enableOutput)
+void setPhaseADuty(uint32_t dutyValue, bool enableOutput)
 {
-
+    PhasePinConfig_t *config = &PhasePinConfig[PHASE_A_INDEX];
+    set_duty_cycle(config, dutyValue, enableOutput);
 }
 
-void setPhaseBDuty(uint16_t dutyValue, bool enableOutput)
+void setPhaseBDuty(uint32_t dutyValue, bool enableOutput)
 {
-
+    PhasePinConfig_t *config = &PhasePinConfig[PHASE_B_INDEX];
+    set_duty_cycle(config, dutyValue, enableOutput);
 }
 
-void setPhaseCDuty(uint16_t dutyValue, bool enableOutput)
+void setPhaseCDuty(uint32_t dutyValue, bool enableOutput)
 {
+    PhasePinConfig_t *config = &PhasePinConfig[PHASE_C_INDEX];
+    set_duty_cycle(config, dutyValue, enableOutput);
+}
 
+static void set_duty_cycle(PhasePinConfig_t* config, uint32_t dutyValue, bool enableOutput)
+{
+    HAL_TIM_PWM_Stop(config->timer, config->timer_channel);
+    __HAL_TIM_SET_COMPARE(config->timer, config->timer_channel, dutyValue);
+    HAL_GPIO_WritePin(config->OutputEnableGPIOPort, config->OutputEnableGPIONum, enableOutput);
+    HAL_TIM_PWM_Start(config->timer, config->timer_channel);
 }
