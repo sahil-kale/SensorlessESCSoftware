@@ -1,17 +1,8 @@
 #include "bldc.h"
+#include "pwm.h"
 #include "main.h"
-#include "tim.h"
-#include "gpio.h"
 #include <stdint.h>
 #include <stdbool.h>
-
-typedef struct PhasePinConfig {
-	uint16_t OutputEnableGPIONum;
-	GPIO_TypeDef* OutputEnableGPIOPort;
-	TIM_HandleTypeDef *timer;
-	uint16_t timer_channel;
-} PhasePinConfig_t;
-
 
 static volatile uint32_t speed = 0;
 static volatile uint8_t bldc_state = 0;
@@ -21,8 +12,6 @@ static volatile bool flag_set_state_switch = false;
 static volatile uint32_t tim2_cnt = 0;
 static volatile uint32_t tim2_ccr = ~0;
 
-
-static void timer_init();
 
 void TIM2_IQR_HANDLER(TIM_HandleTypeDef *htim)
 {
@@ -39,22 +28,10 @@ void TIM2_IQR_HANDLER(TIM_HandleTypeDef *htim)
 
 }
 
-static void timer_init()
-{
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-
-  TIM2->CCR1 = 50000;
-  TIM2->CCR2 = 500000;
-  TIM2->CCR3 = 500;
-  
-}
-
 
 void bldc_init()
 {
-  timer_init();
+  pwm_init();
 }
 
 void bldc_loop()
