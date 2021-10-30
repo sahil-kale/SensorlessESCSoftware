@@ -70,6 +70,8 @@ void Error_Handler(void);
 #define OD_B_GPIO_Port GPIOA
 #define OD_C_Pin GPIO_PIN_5
 #define OD_C_GPIO_Port GPIOA
+#define LED_Pin GPIO_PIN_3
+#define LED_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

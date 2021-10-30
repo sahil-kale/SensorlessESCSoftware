@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "bldc.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -88,6 +89,7 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  bldc_init();
 
   /* USER CODE END 2 */
 
@@ -95,6 +97,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  bldc_loop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
