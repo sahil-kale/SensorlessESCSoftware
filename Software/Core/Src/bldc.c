@@ -4,32 +4,26 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-static volatile uint8_t speed = 50;
+static volatile uint8_t speed = 30;
 static volatile uint8_t bldc_state = 0;
 static volatile bool flag_set_state_switch = false;
 
 //Timer Wraparound checks
-static volatile uint32_t tim2_cnt = 0;
-static volatile uint32_t tim2_ccr = ~0;
+static volatile uint64_t pwm_tim_cnt = 0;
+static volatile uint64_t pwm_tim_ccr = 10;
 
 static void commutate_motor_trapazoidal(uint8_t state);
 
 
-void TIM2_IQR_HANDLER(TIM_HandleTypeDef *htim)
+void pwm_tim_cb()
 {
-  /* 
-  if (__HAL_TIM_GET_FLAG(htim, TIM_FLAG_UPDATE) != RESET)
+  pwm_tim_cnt += 1;
+  if(pwm_tim_cnt == pwm_tim_ccr)
   {
-    if (__HAL_TIM_GET_IT_SOURCE(htim, TIM_IT_UPDATE) != RESET)
-    {
-      __HAL_TIM_CLEAR_IT(htim, TIM_IT_UPDATE);
-      //Do stuff here
-    }
+    commutate_motor_trapazoidal(bldc_state);
+    //pwm_tim_ccr = ~0;
+    pwm_tim_cnt = 0;
   }
-  */
-
-  tim2_cnt += 1;
-
 }
 
 
@@ -42,8 +36,7 @@ void bldc_init()
 void bldc_loop()
 {
 	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-	HAL_Delay(5);
-  commutate_motor_trapazoidal(bldc_state);
+	HAL_Delay(500);
 }
 
 static void commutate_motor_trapazoidal(uint8_t state)
