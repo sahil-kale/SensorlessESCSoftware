@@ -35,7 +35,8 @@ void TIM2_IQR_HANDLER(TIM_HandleTypeDef *htim)
 
 void bldc_init()
 {
-  pwm_init();
+	pwm_init();
+	HAL_TIM_Base_Start_IT(&htim2); //Start interrupt time base
 }
 
 void bldc_loop()
