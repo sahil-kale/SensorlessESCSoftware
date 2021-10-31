@@ -63,7 +63,6 @@ static void timer_init()
 void pwm_init()
 {
     timer_init();
-    setPhaseADuty(500000, true);
 }
 
 void setPhaseADuty(uint32_t dutyValue, bool enableOutput)
@@ -86,8 +85,12 @@ void setPhaseCDuty(uint32_t dutyValue, bool enableOutput)
 
 static void set_duty_cycle(PhasePinConfig_t* config, uint32_t dutyValue, bool enableOutput)
 {
-    HAL_TIM_PWM_Stop(config->timer, config->timer_channel);
+    if(dutyValue > TIM_ARR)
+    {
+        dutyValue = TIM_ARR;
+    }
+    //HAL_TIM_PWM_Stop(config->timer, config->timer_channel);
     __HAL_TIM_SET_COMPARE(config->timer, config->timer_channel, dutyValue);
     HAL_GPIO_WritePin(config->OutputEnableGPIOPort, config->OutputEnableGPIONum, enableOutput);
-    HAL_TIM_PWM_Start(config->timer, config->timer_channel);
+    //HAL_TIM_PWM_Start(config->timer, config->timer_channel);
 }

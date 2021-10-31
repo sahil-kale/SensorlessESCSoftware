@@ -74,6 +74,8 @@ void Error_Handler(void);
 #define LED_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
+#define TIM_ARR (100UL)
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
