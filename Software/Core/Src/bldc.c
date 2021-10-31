@@ -17,7 +17,7 @@ static void commutate_motor_trapazoidal(uint8_t state);
 
 void TIM2_IQR_HANDLER(TIM_HandleTypeDef *htim)
 {
-  /* TIM Update event */
+  /* 
   if (__HAL_TIM_GET_FLAG(htim, TIM_FLAG_UPDATE) != RESET)
   {
     if (__HAL_TIM_GET_IT_SOURCE(htim, TIM_IT_UPDATE) != RESET)
@@ -26,6 +26,9 @@ void TIM2_IQR_HANDLER(TIM_HandleTypeDef *htim)
       //Do stuff here
     }
   }
+  */
+
+  tim2_cnt += 1;
 
 }
 
