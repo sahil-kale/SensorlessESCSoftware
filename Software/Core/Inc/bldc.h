@@ -18,6 +18,11 @@ void bldc_init();
  */
 void bldc_loop();
 
+/**
+ * @brief BackEMF GPIO interrupt callback
+ */
+void BackEMF_Callback(uint16_t GPIO_Pin);
+
 
 
 #endif
