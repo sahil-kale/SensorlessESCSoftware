@@ -10,7 +10,7 @@ static volatile bool flag_set_state_switch = false;
 
 //Timer Wraparound checks
 static volatile uint64_t pwm_tim_cnt = 0;
-static volatile uint64_t pwm_tim_ccr = 100;
+static volatile uint64_t pwm_tim_ccr = 10000;
 
 static void commutate_motor_trapazoidal(uint8_t state);
 
@@ -94,6 +94,7 @@ static void commutate_motor_trapazoidal(uint8_t state)
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+  /*
   volatile uint8_t state = bldc_state;
   if((GPIO_Pin == BEMF_A_Pin) && ((bldc_state == 2) || (bldc_state == 5)))
   {
@@ -175,6 +176,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     //Update the timer stuff
     pwm_tim_ccr = pwm_tim_cnt;
   }
+  */
 
 }
 
