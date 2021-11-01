@@ -72,6 +72,15 @@ void Error_Handler(void);
 #define OD_C_GPIO_Port GPIOA
 #define LED_Pin GPIO_PIN_3
 #define LED_GPIO_Port GPIOB
+#define BEMF_A_Pin GPIO_PIN_5
+#define BEMF_A_GPIO_Port GPIOB
+#define BEMF_A_EXTI_IRQn EXTI4_15_IRQn
+#define BEMF_B_Pin GPIO_PIN_6
+#define BEMF_B_GPIO_Port GPIOB
+#define BEMF_B_EXTI_IRQn EXTI4_15_IRQn
+#define BEMF_C_Pin GPIO_PIN_7
+#define BEMF_C_GPIO_Port GPIOB
+#define BEMF_C_EXTI_IRQn EXTI4_15_IRQn
 /* USER CODE BEGIN Private defines */
 
 #define TIM_ARR (100UL)
