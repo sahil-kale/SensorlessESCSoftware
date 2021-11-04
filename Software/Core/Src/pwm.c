@@ -8,9 +8,9 @@
 
 #define NUM_PHASES (3UL)
 
-static const uint8_t PHASE_A_INDEX = 0;
-static const uint8_t PHASE_B_INDEX = 1;
-static const uint8_t PHASE_C_INDEX = 2;
+uint8_t PHASE_A_INDEX = 0;
+uint8_t PHASE_B_INDEX = 1;
+uint8_t PHASE_C_INDEX = 2;
 
 #define MAX_VAL_32_BIT (0xFFFFFFFF)
 #define MAX_VAL_16_BIT (0xFFFF)
@@ -63,6 +63,20 @@ static void timer_init()
 void pwm_init()
 {
     timer_init();
+}
+
+void invert_phases(bool inverted)
+{
+    if(inverted)
+    {
+        PHASE_B_INDEX = 2;
+        PHASE_C_INDEX = 1;
+    }
+    else
+    {
+        PHASE_B_INDEX = 1;
+        PHASE_C_INDEX = 2;
+    }
 }
 
 void setPhaseADuty(uint32_t dutyValue, bool enableOutput)
