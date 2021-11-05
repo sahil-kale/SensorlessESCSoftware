@@ -29,6 +29,4 @@ void BackEMF_Callback(uint16_t GPIO_Pin);
  */
 void update_control(uint8_t new_speed, bool is_reversed);
 
-
-
 #endif

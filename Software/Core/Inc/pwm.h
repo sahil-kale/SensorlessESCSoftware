@@ -1,8 +1,8 @@
 #ifndef PWM_H
 #define PWM_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 extern uint8_t PHASE_A_INDEX;
 extern uint8_t PHASE_B_INDEX;
@@ -21,21 +21,24 @@ void invert_phases(bool inverted);
 /**
  * Sets the duty cycle of the PWM signal for Phase A
  * @param dutyValue the duty cycle value
- * @param enableOutput true to enable the output, false to disable the half bridge
+ * @param enableOutput true to enable the output, false to disable the half
+ * bridge
  */
 void setPhaseADuty(uint32_t dutyValue, bool enableOutput);
 
 /**
  * Sets the duty cycle of the PWM signal for Phase A
  * @param dutyValue the duty cycle value
- * @param enableOutput true to enable the output, false to disable the half bridge
+ * @param enableOutput true to enable the output, false to disable the half
+ * bridge
  */
 void setPhaseBDuty(uint32_t dutyValue, bool enableOutput);
 
 /**
  * Sets the duty cycle of the PWM signal for Phase A
  * @param dutyValue the duty cycle value
- * @param enableOutput true to enable the output, false to disable the half bridge
+ * @param enableOutput true to enable the output, false to disable the half
+ * bridge
  */
 void setPhaseCDuty(uint32_t dutyValue, bool enableOutput);
 
