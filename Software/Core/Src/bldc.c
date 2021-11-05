@@ -31,7 +31,12 @@ static void control_loop();
 
 static void commutate_motor_trapazoidal(uint8_t state);
 
-void pwm_tim_cb() {
+// 10KHz Timer Callback
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+  // Assert that the correct timer callback has occured
+  if (htim != &htim2) {
+    return;
+  }
   pwm_tim_cnt += 1;
   if (pwm_tim_cnt == pwm_tim_ccr) {
     bldc_state++;

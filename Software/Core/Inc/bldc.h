@@ -5,11 +5,6 @@
 #include <stdbool.h>
 
 /**
- * @brief increments the PWM timer counter
- */
-void pwm_tim_cb();
-
-/**
  * @brief initalizes the BLDC motor controller
  */
 void bldc_init();

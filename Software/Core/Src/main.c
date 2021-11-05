@@ -88,6 +88,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
   bldc_init();
 
@@ -137,6 +138,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  HAL_RCC_MCOConfig(RCC_MCO, RCC_MCO1SOURCE_SYSCLK, RCC_MCODIV_1);
 }
 
 /* USER CODE BEGIN 4 */
