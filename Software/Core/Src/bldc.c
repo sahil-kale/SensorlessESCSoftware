@@ -4,6 +4,7 @@
 #include "pwm.h"
 #include <stdbool.h>
 #include <stdint.h>
+//#define ENABLE_BACKEMF_SENSEING_DEBUG
 
 typedef struct backemf_gpio_map {
   GPIO_TypeDef *GPIOx;
@@ -25,7 +26,7 @@ static volatile bool flag_set_state_switch = false;
 
 // Timer Wraparound checks
 static volatile uint64_t pwm_tim_cnt = 0;
-static volatile uint64_t pwm_tim_ccr = 10000;
+static volatile uint64_t pwm_tim_ccr = 30;
 
 static void control_loop();
 
@@ -42,9 +43,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     bldc_state++;
     bldc_state %= 6;
     commutate_motor_trapazoidal(bldc_state);
-#ifdef ENABLE_BACKEMF_SENSEING_DEBUG
-    pwm_tim_ccr = ~0;
-#endif
     pwm_tim_cnt = 0;
   }
 
@@ -136,7 +134,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
   if (GPIO_Pin == appropriate_backemf_map->GPIO_Pin) {
     // Correct BackEMF signal
-    for (int8_t counter = 0; counter < 10; counter++) {
+    for (int8_t counter = 0; counter < 100; counter++) {
       bool bemf_state = HAL_GPIO_ReadPin(appropriate_backemf_map->GPIOx,
                                          appropriate_backemf_map->GPIO_Pin);
       // Debounce logic
